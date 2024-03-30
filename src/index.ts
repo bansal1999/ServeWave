@@ -34,10 +34,11 @@ app.post("/deploy", async (req, res) => {
   await simpleGit().clone(repoUrl, path.join(__dirname, `output/${id}`));
 
   const outputDir: string = path.join(__dirname, `output/${id}`);
+  console.log(outputDir);
   const files: string[] = getAllFiles(outputDir);
 
   for (const file of files) {
-    await uploadFile(file.slice(outputDir.length + 1), file);
+    await uploadFile(file.slice(__dirname.length + 1), file);
   }
 
   // put this into S3
