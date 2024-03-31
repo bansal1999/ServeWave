@@ -6,6 +6,10 @@ import bodyParser from "body-parser";
 import path from "path";
 import fs from "fs";
 import { uploadFile } from "./aws";
+import { createClient } from "redis";
+
+const publisher = createClient();
+publisher.connect();
 
 const app = express();
 app.use(cors());
@@ -40,6 +44,9 @@ app.post("/deploy", async (req, res) => {
   for (const file of files) {
     await uploadFile(file.slice(__dirname.length + 1), file);
   }
+
+  // pushing the id into redis-queue
+  publisher.lPush("build-queue", id);
 
   // put this into S3
   res.json({
