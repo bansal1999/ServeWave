@@ -22,6 +22,7 @@ const s3 = new aws_sdk_1.S3({
     secretAccessKey: secrets_1.SECRET_ACCESS_KEY,
     endpoint: secrets_1.ENDPOINT,
 });
+//Function to download from S3 bucket to nodejs server  
 function downloadS3Folder(prefix) {
     return __awaiter(this, void 0, void 0, function* () {
         var _a;
