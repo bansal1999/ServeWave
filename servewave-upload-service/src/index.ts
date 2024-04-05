@@ -47,6 +47,9 @@ app.post("/deploy", async (req, res) => {
 
   // pushing the id into redis-queue
   publisher.lPush("build-queue", id);
+  // seting the status to uploaded in redis-queue
+  publisher.hSet("status", id, "uploaded");
+  const value = await publisher.hGet("status", id);
 
   // put this into S3
   res.json({
